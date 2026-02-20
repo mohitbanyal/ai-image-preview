@@ -43,13 +43,16 @@ with st.form("image_form", clear_on_submit=True):
                     prompt
                 ]
             )
-        for part in response.parts:
-            if part.text is not None:
-                st.write(part.text)
-            elif part.inline_data is not None:
-                image = part.as_image()
-                image.save("generated_image.png")
-
-        st.write(response.text)
+        # Check if response has text
+        if hasattr(response, 'text') and response.text:
+            st.write(response.text)
+        elif hasattr(response, 'inline_data'):
+            # Handle inline data if it exists
+            for part in response.inline_data:
+                if part.image:
+                    st.image(part.image, caption="Generated Image")
+                else:
+                    st.write(part.text)  # Handle other text parts if necessary
+        else:
+            st.write("No response text or inline data received.")
         
-
