@@ -1,5 +1,5 @@
-from google import genai
-from google.genai import types
+import google.generativeai as genai
+from google.generativeai import types
 from PIL import Image
 from dotenv import load_dotenv
 import os
